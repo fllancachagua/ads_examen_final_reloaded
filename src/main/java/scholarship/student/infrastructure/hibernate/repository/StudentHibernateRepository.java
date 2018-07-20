@@ -1,61 +1,68 @@
 package scholarship.student.infrastructure.hibernate.repository;
 
-import java.math.BigDecimal;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 
+import scholarship.common.application.enumeration.StudentType;
+import scholarship.doctorate.domain.entity.PhdStudent;
+import scholarship.master.domain.entity.MasterStudent;
 import scholarship.student.domain.entity.Student;
 import scholarship.student.domain.repository.StudentRepository;
+import scholarship.undergraduate.domain.entity.UndergraduatedStudent;
 
 @Repository
 public class StudentHibernateRepository implements StudentRepository {
-
-	private Set<Student> students;
 	
+	private List<Student> phdStudents;
+	private List<Student> masterStudents;
+	private List<Student> undergraduatedStudents;
+	private List<Student> allStudents;
+
 	public StudentHibernateRepository () {
-		students= new HashSet<>();
-		students.add(new Student(1L, "Felipe","Llancachagua",new BigDecimal(100)));
-		students.add(new Student(2L, "Roberto","Palacios",new BigDecimal(200)));
-		students.add(new Student(3L, "Juan","Perez",new BigDecimal(300)));
-		students.add(new Student(4L, "Ernesto","Cardenas",new BigDecimal(400)));
-		
+		phdStudents= new ArrayList<>();
+		phdStudents.add(new PhdStudent(1L, "Felipe","Llancachagua"));
+		phdStudents.add(new PhdStudent(2L, "Julio","Stalin"));
+		phdStudents.add(new PhdStudent(3L, "German","Goering"));
+
+		masterStudents= new ArrayList<>();
+		masterStudents.add(new MasterStudent(4L, "Alfonso","Higuairan"));
+		masterStudents.add(new MasterStudent(5L, "Luca","Modric"));
+		masterStudents.add(new MasterStudent(6L, "Antony","Griezman"));
+
+		undergraduatedStudents= new ArrayList<>();
+		undergraduatedStudents.add(new UndergraduatedStudent(6L, "Irvin","Berlin"));
+		undergraduatedStudents.add(new UndergraduatedStudent(7L, "Joe","Maggio"));
+		undergraduatedStudents.add(new UndergraduatedStudent(8L, "Maria","Miranda"));		
+		undergraduatedStudents.add(new UndergraduatedStudent(9L, "Jose","Grau"));		
 	}
 	
 	@Override
 	public Student findById(long id) {
-		for(Student s :students) {
-			if(s.getId()==id) {
-				return s;
-			}
-		}
 		return null;
 	}
-
+	
+	
 	@Override
-	public List<Student> findAllPaginated(int pageNumber, int pageSize) {
-		// TODO Auto-generated method stub
+	public List<Student> findByStudentType(String studentType) {
+		if (studentType.equals(StudentType.UNDERGRADUATED_STUDENT.toString())) return undergraduatedStudents;
+		if (studentType.equals(StudentType.MASTER_STUDENT.toString())) return masterStudents;
+		if (studentType.equals(StudentType.PHD_STUDENT.toString())) return phdStudents;
+		if (studentType.equals(StudentType.ALL_STUDENT.toString())) {joinListStudents();return allStudents;}
 		return null;
 	}
-
-	@Override
-	public long countAll() {
-		// TODO Auto-generated method stub
-		return 0;
+	
+	public void joinListStudents() {
+		allStudents = new ArrayList<>();
+		allStudents.addAll(phdStudents);
+		allStudents.addAll(masterStudents);
+		allStudents.addAll(undergraduatedStudents);
 	}
+	
 
-	@Override
-	public Student findByDni(String dni) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
-	@Override
-	public void save(Student customer) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

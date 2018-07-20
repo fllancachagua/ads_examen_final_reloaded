@@ -19,7 +19,6 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
@@ -83,10 +82,4 @@ public class ScholarshipApplication {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
-	
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }	
-	
 }

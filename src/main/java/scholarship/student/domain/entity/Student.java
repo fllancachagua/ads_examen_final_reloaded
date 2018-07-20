@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 public   class Student {
 	private Long id;
+	private String firstName;
+	private String lastName;
+	
 	public Long getId() {
 		return id;
 	}
@@ -11,18 +14,14 @@ public   class Student {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	private String firstName;
-	private String lastName;
-	private BigDecimal scholarshipAmount;
-	
+
 	public Student() {
 	}	
 
-	public Student(Long id, String firstName, String lastName, BigDecimal scholarshipAmount) {
+	public Student(Long id, String firstName, String lastName) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.scholarshipAmount = scholarshipAmount;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -36,12 +35,9 @@ public   class Student {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public BigDecimal getScholarshipAmount() {
-		return scholarshipAmount;
-	}
-	public void setScholarshipAmount(BigDecimal scholarshipAmount) {
-		this.scholarshipAmount = scholarshipAmount;
-	}
 	
+	public BigDecimal calculateScholarshipAmount(){
+		return new BigDecimal(0.0);
+	}
 	
 }

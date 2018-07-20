@@ -3,17 +3,18 @@ package scholarship.student.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import scholarship.common.api.controller.ResponseHandler;
+import scholarship.common.application.dto.ListStudentResponse;
+import scholarship.common.application.dto.ScholarshipAmountResponse;
 import scholarship.student.application.StudentService;
 import scholarship.student.application.dto.StudentDto;
 import scholarship.student.application.dto.mapper.StudentToStudentDtoMapper;
-import scholarship.student.domain.entity.Student;
 
 @RestController
 @RequestMapping("api/students/")
@@ -28,19 +29,35 @@ public class StudentController {
 	@Autowired
 	StudentToStudentDtoMapper studentDtoMapper;
 	
-	@RequestMapping(method = RequestMethod.GET, path = "{student_id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "get scholarschip amount", httpMethod = "GET", response = StudentDto.class)
-	public ResponseEntity<Object> getScholarshipAmount(@PathVariable("student_id") Long id) throws Exception {
+	@RequestMapping(method = RequestMethod.GET, path ="/scholarship/",produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "get scholarschip amount", httpMethod = "GET", response = ScholarshipAmountResponse.class)
+	public ResponseEntity<Object> getScholarshipAmount(@RequestParam(value = "student_type", defaultValue = "undergraduated")String  student_type) throws Exception {
 		try {
-			Student student = studentService.getScholarshipAmount(id);
-			if (student == null) {
+			ScholarshipAmountResponse scholarshipAmountResponse = studentService.getScholarshipAmount(student_type);
+			if (scholarshipAmountResponse == null) {
 				return this.responseHandler.getNotFoundObjectResponse("Student not found");
 			}
-			return this.responseHandler.getOkObjectResponse(studentDtoMapper.mapper(student));
+			return this.responseHandler.getOkObjectResponse(scholarshipAmountResponse);
 		} catch (IllegalArgumentException ex) {
 			return this.responseHandler.getAppCustomErrorResponse(ex.getMessage());
 		} catch (Throwable ex) {
 			return this.responseHandler.getAppExceptionResponse(ex);
 		}
 	}	
+	
+	@RequestMapping(method = RequestMethod.GET,  produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "list students", httpMethod = "GET", response = StudentDto.class , responseContainer = "List")
+	public ResponseEntity<Object> listStudents(@RequestParam(value = "student_type", defaultValue = "undergraduated")String  student_type) throws Exception {
+		try {
+			ListStudentResponse<StudentDto>  studentsDto = studentService.findStudents(student_type);
+			if (studentsDto == null) {
+				return this.responseHandler.getNotFoundObjectResponse("Data not found");
+			}
+			return this.responseHandler.getOkObjectResponse(studentsDto);
+		} catch (IllegalArgumentException ex) {
+			return this.responseHandler.getAppCustomErrorResponse(ex.getMessage());
+		} catch (Throwable ex) {
+			return this.responseHandler.getAppExceptionResponse(ex);
+		}
+	}		
 }
