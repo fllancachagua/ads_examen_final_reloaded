@@ -1,0 +1,6 @@
+---
+applications:
+- name: banking-app
+  path: target/clean-architecture-0.0.1-SNAPSHOT.jar
+instances: 1
+memory: 1024M
