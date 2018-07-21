@@ -1,2 +1,2 @@
-# Banking API - Clean Architecture
-Banking API - Clean Architecture
+# Scholarship API - Clean Architecture
+Scholarship API - Clean Architecture
